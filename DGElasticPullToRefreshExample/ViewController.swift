@@ -44,6 +44,10 @@ class ViewController: UIViewController {
         tableView.dg_setPullToRefreshBackgroundColor(tableView.backgroundColor!)
     }
     
+    override func viewDidAppear(animated: Bool) {
+        tableView.dg_startLoading()
+    }
+    
     deinit {
         tableView.dg_removePullToRefresh()
     }
