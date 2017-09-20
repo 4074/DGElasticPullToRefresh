@@ -1,28 +1,28 @@
 /*
-
-The MIT License (MIT)
-
-Copyright (c) 2015 Danil Gontovnik
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
-
-*/
+ 
+ The MIT License (MIT)
+ 
+ Copyright (c) 2015 Danil Gontovnik
+ 
+ Permission is hereby granted, free of charge, to any person obtaining a copy
+ of this software and associated documentation files (the "Software"), to deal
+ in the Software without restriction, including without limitation the rights
+ to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ copies of the Software, and to permit persons to whom the Software is
+ furnished to do so, subject to the following conditions:
+ 
+ The above copyright notice and this permission notice shall be included in all
+ copies or substantial portions of the Software.
+ 
+ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ SOFTWARE.
+ 
+ */
 
 import UIKit
 
@@ -58,7 +58,7 @@ public class DGElasticPullToRefreshLoadingViewCircle: DGElasticPullToRefreshLoad
         transform = CATransform3DRotate(transform, CGFloat(-90.0).toRadians(), 0.0, 0.0, 1.0)
         return transform
     }()
-
+    
     // MARK: -
     // MARK: Constructors
     
@@ -66,13 +66,13 @@ public class DGElasticPullToRefreshLoadingViewCircle: DGElasticPullToRefreshLoad
         super.init(frame: .zero)
         
         shapeLayer.lineWidth = 1.0
-        shapeLayer.fillColor = UIColor.clearColor().CGColor
-        shapeLayer.strokeColor = tintColor.CGColor
+        shapeLayer.fillColor = UIColor.clear.cgColor
+        shapeLayer.strokeColor = tintColor.cgColor
         shapeLayer.actions = ["strokeEnd" : NSNull(), "transform" : NSNull()]
         shapeLayer.anchorPoint = CGPoint(x: 0.5, y: 0.5)
         layer.addSublayer(shapeLayer)
     }
-
+    
     required public init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
@@ -81,7 +81,7 @@ public class DGElasticPullToRefreshLoadingViewCircle: DGElasticPullToRefreshLoad
     // MARK: Methods
     
     override public func setPullProgress(progress: CGFloat) {
-        super.setPullProgress(progress)
+        super.setPullProgress(progress: progress)
         
         shapeLayer.strokeEnd = min(0.9 * progress, 0.9)
         
@@ -96,31 +96,31 @@ public class DGElasticPullToRefreshLoadingViewCircle: DGElasticPullToRefreshLoad
     override public func startAnimating() {
         super.startAnimating()
         
-        if shapeLayer.animationForKey(kRotationAnimation) != nil { return }
+        if shapeLayer.animation(forKey: kRotationAnimation) != nil { return }
         
         let rotationAnimation = CABasicAnimation(keyPath: "transform.rotation.z")
-        rotationAnimation.toValue = CGFloat(2 * M_PI) + currentDegree()
+        rotationAnimation.toValue = CGFloat(2 * Double.pi) + currentDegree()
         rotationAnimation.duration = 1.0
         rotationAnimation.repeatCount = Float.infinity
-        rotationAnimation.removedOnCompletion = false
+        rotationAnimation.isRemovedOnCompletion = false
         rotationAnimation.fillMode = kCAFillModeForwards
-        shapeLayer.addAnimation(rotationAnimation, forKey: kRotationAnimation)
+        shapeLayer.add(rotationAnimation, forKey: kRotationAnimation)
     }
     
     override public func stopLoading() {
         super.stopLoading()
         
-        shapeLayer.removeAnimationForKey(kRotationAnimation)
+        shapeLayer.removeAnimation(forKey: kRotationAnimation)
     }
     
     private func currentDegree() -> CGFloat {
-        return shapeLayer.valueForKeyPath("transform.rotation.z") as! CGFloat
+        return shapeLayer.value(forKeyPath: "transform.rotation.z") as! CGFloat
     }
     
     override public func tintColorDidChange() {
         super.tintColorDidChange()
         
-        shapeLayer.strokeColor = tintColor.CGColor
+        shapeLayer.strokeColor = tintColor.cgColor
     }
     
     // MARK: -
@@ -132,7 +132,9 @@ public class DGElasticPullToRefreshLoadingViewCircle: DGElasticPullToRefreshLoad
         shapeLayer.frame = bounds
         
         let inset = shapeLayer.lineWidth / 2.0
-        shapeLayer.path = UIBezierPath(ovalInRect: CGRectInset(shapeLayer.bounds, inset, inset)).CGPath
+        
+        shapeLayer.path = UIBezierPath(ovalIn: shapeLayer.bounds.insetBy(dx: inset, dy: inset)).cgPath
     }
     
 }
+
